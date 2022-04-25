@@ -1,5 +1,5 @@
 #include "main.h"
-#include "studio.h"
+#include <studio.h>
 /**
   * _memcpy - copy memory area
   * @dest: dest memory area
