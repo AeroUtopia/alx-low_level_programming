@@ -1,5 +1,4 @@
 #include "main.h"
-#include <studio.h>
 /**
  * *_memcpy - copies memory area
  * @dest: destination copy
