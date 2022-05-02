@@ -66,4 +66,3 @@ char *str_concat(char *s1, char *s2)
 	ptr += '\0';
 	return (ptr);
 }
-© 2022 GitHub, Inc.
