@@ -3,48 +3,40 @@
 #include <stdlib.h>
 
 /**
- * *argstostr - convert arguments on command line to strings
- * @ac: int type
- * @av: pointer to array
- * Return: arguments as strings
+ * argstostr - concatenate all arguments into a new string
+ * @ac: the argument count
+ * @av: the argument vector
+ *
+ * Return: NULL memory allocation fails, ac is 0 or av is NULL,
+ * otherwise return a pointer to the new string
  */
-
 char *argstostr(int ac, char **av)
 {
-	int size, count, count1, count2 = 0;
-	char *ptr;
+	char *cat, *chr;
+	int arg, size;
 
-	if (ac == 0 || av == NULL)
-	{
+	if (!ac || !av)
 		return (NULL);
+
+	for (arg = 0, size = 1; arg < ac; ++arg, ++size)
+	{
+		for (chr = av[arg]; *chr; ++chr, ++size)
+			;
 	}
 
-	for (count = 0; count < ac; count++)
-	{
-		for (count1 = 0; av[count][count1] != '\0'; count1++)
-		{
-			size += 1;
-		}
-		size += 1;
-	}
-	size += 1;
+	cat = (char *) malloc(sizeof(char) * size);
 
-	ptr = malloc(sizeof(char) * size);
-	if (ptr == NULL)
-	{
-		free(ptr);
+	if (!cat)
 		return (NULL);
-	}
-	for (count = 0; count < ac; count++)
+
+	for (arg = 0, size = 0; arg < ac; ++arg, ++size)
 	{
-		for (count1 = 0; av[count][count1] != '\0'; count1++)
-		{
-			ptr[count2] = av[count][count1];
-			count2++;
-		}
-		ptr[count2] = '\n';
-		count2++;
+		for (chr = av[arg]; *chr; ++chr, ++size)
+			cat[size] = *chr;
+		cat[size] = '\n';
 	}
-	ptr[count2] = '\0';
-	return (ptr);
+
+	cat[size] = '\0';
+
+	return (cat);
 }
