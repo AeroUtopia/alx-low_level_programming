@@ -1,65 +1,57 @@
 #include "main.h"
+#include <stdlib.h>
+#include <string.h>
 /**
- * _isspace - check if a character is whitespace
- * @c: the character to check
- *
- * Return: 1 is c is a whitespace character, otherwise 0
- */
-int _isspace(int c)
-{
-	if (c == 0x20 || (c >= 0x09 && c <= 0x0d))
-		return (1);
-	return (0);
-}
-
-
-/**
- * strtow - split a string into words
- * @str: a pointer to the string to split
- *
- * Return: NULL if memory allocation fails or if str is NULL or empty (""),
- * otherwise return a pointer to the array of words terminated by a NULL
+ * strtow - splits a string to words
+ * @str: string to split *
+ * Return: a point to an array of strings or NULL
  */
 char **strtow(char *str)
 {
-	char **words, *pos = str;
-	int w = 0, c;
+	char **arr_words = NULL;
+	int i, j, maxlen, wlen = 0, slen, words = 0, sig = 0, pre_sig = 0;
 
-	if (!(str && *str))
+	if (str == NULL || str == "")
 		return (NULL);
-	do {
-		while (_isspace(*pos))
-			++pos;
-		if (!*pos)
-			break;
-		while (*(++pos) && !_isspace(*pos))
-			;
-	} while (++w, *pos);
-	if (!w)
+	slen = strlen(str);
+	for (i = 0; i < slen; i++)
+	{
+		sig = (str[i] == 32 || str[i] == "\t") ? 0 : 1;
+		words = (pre_sig == 0 && sig == 1) ? words + 1 : words;
+		if (wlen > 0 && sig == 0)
+			maxlen = (wlen > maxlen) ? wlen : maxlen;
+		wlen = (sig) ? wlen + 1 : 0;
+		pre_sig = sig;
+	}
+	if (words == 0)
 		return (NULL);
-	words = (char **) malloc(sizeof(char *) * (w + 1));
-	if (!words)
+	arr_words = (char **)malloc(words * sizeof(char *));
+	if (arr_words == NULL)
+	{
+		free(arr_words);
 		return (NULL);
-	w = 0, pos = str;
-	do {
-		while (_isspace(*pos))
-			++pos;
-		if (!*pos)
-			break;
-		for (str = pos++; *pos && !_isspace(*pos); ++pos)
-			;
-		words[w] = (char *) malloc(sizeof(char) * (pos - str + 1));
-		if (!words[w])
+	}
+	for (i = 0; i < words; i++)
+	{
+		arr_words[i]=(char *)malloc((maxlen + 1) * sizeof(char));
+		if (arr_words[i] == NULL)
 		{
-			while (w >  0)
-				free(words[--w]);
-			free(words);
+			for (j = 0; j < i; j++)
+				free(arr_words[j]);
+			free(arr_words);
 			return (NULL);
 		}
-		for (c = 0; str < pos; ++c, ++str)
-			words[w][c] = *str;
-		words[w][c] = '\0';
-	} while (++w, *pos);
-	words[w] = NULL;
-	return (words);
+	}
+	wlen = 0;
+	words = 0;
+	for (i = 0; i < slen; i++)
+	{
+		sig = (str[i] == 32 || str[i] == 9) ? 0 : 1;
+		words = (pre_sig == 0 && sig == 1) ? words + 1 : words;
+		if (sig)
+			arr_words[words][wlen] = str[i];
+		wlen = (sig) ? wlen + 1 : 0;
+		pre_sig = sig;
+	}
+	return (arr_words);
 }
