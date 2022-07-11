@@ -1,3 +1,3 @@
 #!/bin/bash
-wget -q -O /tmp/cheatme.so https://github.com/AeroUtopia/alx-low_level_programming/tree/master/0x18-dynamic_libraries
-export LD_PRELOAD=/tmp/cheatme.so
+wget -P /tmp/ https://raw.github.com/david-develop/holbertonschool-low_level_programming/master/0x18-dynamic_libraries/libran.so
+export LD_PRELOAD=/tmp/libran.so
