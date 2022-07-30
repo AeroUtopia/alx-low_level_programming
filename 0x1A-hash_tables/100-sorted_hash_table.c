@@ -1,5 +1,7 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 #include "hash_tables.h"
-
 /**
  * shash_table_create - creates a sorted hash table
  * @size: size of the hash table
@@ -117,7 +119,7 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 		return (0);
 	index = key_index((const unsigned char *)key, ht->size);
 	tmp = ht->array[index];
-[O	while (tmp != NULL)
+	while (tmp != NULL)
 	{
 		if (strcmp(tmp->key, key) == 0)
 		{
